@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+    <body>
+
+    </body>
+    <script>
+        (function(){
+            
+            let headers = new Headers();
+            headers.append('Content-Type', 'text/plain');
+
+            const init = {
+                method: 'GET',
+                headers: headers,
+               // mode: 'cors',  //uncomment when using url instead of small.txt
+                cache: 'default'
+            };
+            async function getwords(){
+                debugger;
+                var words = await fetch('small.json', init).then(function(response) {
+                                                                debugger;
+                                                            }); 
+                debugger;
+            }
+            getwords();
+            
+        })();
+    </script>
+</html>
