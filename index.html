@@ -1,12 +1,14 @@
 <!doctype html>
 <html>
     <head>
+        <link src="style.css" rel="stylesheet" type="text/css">
         <style>
             .wrapper {
                 display:grid;
                 grid-template-areas: "left right";
                 grid-template-columns: 10fr 2fr;
                 grid-template-rows: 1fr;
+                overflow-y: auto;
             }
             .left {
                 grid-area: left;
@@ -53,7 +55,7 @@
                         throw new Error(errorStatus);
                         contentarea.innerText = errorStatus;
                     }
-                    
+
                     let alltext = await response.text();
                     alltext = alltext.replace(/[^a-zA-Z]/g,' ').trim();
                     alltext = alltext.replace(/\s\s+/g,' ').trim();
