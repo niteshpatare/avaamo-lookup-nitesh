@@ -7,38 +7,58 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
 
       <style>
-html {
-    font-size: 62.5%;
-}
-*, ::after, ::before {
-    box-sizing: border-box;
-}
-*, *::before, *::after {
-    -ms-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    outline: solid 1px red;
-}
-body{
-    outline: 0;
-    vertical-align: baseline;
-    white-space: normal;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    font-size: 1.6rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #212529;
-    text-align: left;
-    word-break: break-word;
-    word-wrap: break-word;
-    overflow: hidden; overflow-y: auto;
-    overflow-wrap: normal;
-}
-main { padding: 8px;min-width:380px;}
+          body, html {
+                width: 100%;
+                height: 100%;
+          }
+            html {
+                font-size: 62.5%;
+            }
 
+            *, *::before, *::after {
+                -ms-box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+            * {
+                outline: dotted 0px red;padding:4px;
+            }
+            body{
+                outline: 0;
+                vertical-align: baseline;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+                font-size: 1.6rem;
+                font-weight: 400;
+                line-height: 1.5;
+                color: #212529;
+                text-align: left;
+                max-width:100%;
+                margin:0; padding:0;
+             padding: 4px;min-width:380px;max-width:95%; margin: 0 auto;}
+            body, div, span, applet, object, iframe,
+            h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+            a, abbr, acronym, address, big, cite, code,
+            del, dfn, em, img, ins, kbd, q, s, samp,
+            small, strike, strong, sub, sup, tt, var,
+            b, u, i, center,
+            dl, dt, dd, ol, ul, li,
+            fieldset, form, label, legend,
+            table, caption, tbody, tfoot, thead, tr, th, td,
+            article, aside, canvas, details, embed, 
+            figure, figcaption, footer, header, hgroup, 
+            menu, nav, output, ruby, section, summary,
+            time, mark, audio, video {
+                
+            max-width:100%;
+            overflow:hidden;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            word-break: break-all;
+            overflow-wrap: anywhere;
+            overflow-y: auto;
+
+            }
     
             .wrapper {
                 display:grid;
@@ -54,27 +74,21 @@ main { padding: 8px;min-width:380px;}
             .right {
                 grid-area: right;display:grid;
             }
-
+.minspace{min-width: 200px;display:inline-block;}
         </style>
     </head>
     <body>
-        <main>
-            <section class='all clearfix'>
-                <div class='wrapper clearfix'>
-                    <div class=left>l</div>
-                    <div class=right>r</div>
-                </div>
-            </section>
-            <hr class=clearfix>
-            <section class='content clearfix'></section>
-            <div class='footer clearfix'><br>
-                @NiteshPatare for Avaamo<br>
-            </div>
-        </div>
-    </main>
+
+                <section class='wrapper'>
+                <div class=left><code class=sorted>Sorted Values</code><table></table></div>
+                <div class=right></div>
+                </section>
+
+            <section class='clearfix content'>Loading...</section>
+            <footer class='footer'>@NiteshPatare for Avaamo</footer>
         <script>
             (function(){
-                let words = {}
+                let words = {}; let count =10; let allWords = [];
                 let headers = new Headers();
                 headers.append('Content-Type', 'text/plain');
 
@@ -84,29 +98,78 @@ main { padding: 8px;min-width:380px;}
                     mode: 'cors',  //uncomment when using url instead of small.txt
                     cache: 'default'
                 };
-                const url = 'https://raw.githubusercontent.com/niteshpatare/avaamo-lookup-nitesh/91da6ec3806fb017015aa357c61687fbf917305f/small.txt';
+                //const url = 'https://raw.githubusercontent.com/niteshpatare/avaamo-lookup-nitesh/aa573c8ae63804036b885c31c65684e3c2902cc0/small.txt';
+                const url = 'https://raw.githubusercontent.com/niteshpatare/avaamo-lookup-nitesh/aa573c8ae63804036b885c31c65684e3c2902cc0/big.txt';
                 async function getwords(){
                     //debugger;
-                    var response = await fetch(url, init) /*.then(function(response) {
-                                                                    debugger;
-                                                                }); */
-                    const contentarea =document.querySelector('section.content');
+                    var response = await fetch(url, init); /*.then((response) => {
+                                                                return response.json();
+                                                            })
+                                                            .then((myJson) => {
+                                                                console.log(myJson);
+                                                            }); */
+                    const contentarea =document.querySelector('.content');
+                    const sortarea =document.querySelector('.sorted');
 
                     if(!response.ok) {
                         const errorStatus = `HTTP error: ${response.status}`;
                         throw new Error(errorStatus);
                         contentarea.innerText = errorStatus;
                     }
+                    else{
+                        //get filtered words
+                        let alltext = await response.text();
+                        alltext = alltext.replace(/[^a-zA-Z]/g,' ').trim();
+                        alltext = alltext.replace(/\s\s+/g,' ').trim();
+                        contentarea.innerText = alltext;
+                        
+                        //split words by spaces
+                        let wordarray = [];
+                        wordarray = alltext.split(' ');
 
-                    let alltext = await response.text();
-                    alltext = alltext.replace(/[^a-zA-Z]/g,' ').trim();
-                    alltext = alltext.replace(/\s\s+/g,' ').trim();
-                    alltext = alltext.replace(/<br>/g,'').trim();
-                    debugger;
-                    contentarea.innerText = alltext;
-                    console.log(alltext);
-                    debugger;
+                        //generate hash table with word:count (key/value pair)
+                        wordarray.map(function(ele){
+                            if(!words.hasOwnProperty(ele)) { words[ele] = 1;  }
+                            else { words[ele] += 1; }
+                            return ele;
+                        });
+                        console.log(words);
+                        debugger;
+
+                        //create an array of object ex: [{text:val},{text:val},{text:val}]
+                        for (const key in words) {
+                            console.log(`${key}: ${words[key]}`);
+                            let nobj = {}; nobj.text = key; nobj.val = words[key];
+                            allWords.push(nobj);
+                        }
+                        console.log(allWords);
+
+                        //sort the object keys based on value counts.
+
+                        //allWords.sort('text');
+                        //console.log(allWords);
+
+                        //store all counts in an array
+                        allWords.sort(compare).reverse().splice(10);
+                        console.log({allWords});
+                        sortarea.innerText = `${JSON.stringify(allWords)}`;
+                        //show as table using map
+                        allWords.map(function(ele){
+                            let d = document.createElement("tr")
+                            d.innerHTML = "<span class=minspace>"+ele.text +":</span><span class=minspace>"+ele.val+"</span>";
+                            document.getElementsByTagName("table")[0].appendChild(d);
+                        });
+                        debugger;
+                    }
                 }
+
+                function compare(a, b) {
+                    if (a.val > b.val) return 1;
+                    if (b.val > a.val) return -1;
+                    return 0;
+                }
+
+
                 getwords();
             })();
         </script>
