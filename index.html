@@ -77,6 +77,8 @@ main { padding: 8px;min-width:380px;}
                 let words = {}
                 let headers = new Headers();
                 headers.append('Content-Type', 'text/plain');
+                headers.append('X-PINGOTHER', 'pingpong');
+                headers.append('Access-Control-Allow-Origin', 'https://raw.githubusercontent.com');
 
                 const init = {
                     method: 'GET',
@@ -84,7 +86,7 @@ main { padding: 8px;min-width:380px;}
                     mode: 'cors',  //uncomment when using url instead of small.txt
                     cache: 'default'
                 };
-                const url = 'https://raw.githubusercontent.com/niteshpatare/avaamo-lookup-nitesh/main/small.txt';
+                const url = 'https://raw.githubusercontent.com/niteshpatare/avaamo-lookup-nitesh/main/small.txt?raw=true';
                 async function getwords(){
                     //debugger;
                     var response = await fetch(url, init) /*.then(function(response) {
