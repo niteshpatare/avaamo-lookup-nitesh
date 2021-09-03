@@ -77,8 +77,6 @@ main { padding: 8px;min-width:380px;}
                 let words = {}
                 let headers = new Headers();
                 headers.append('Content-Type', 'text/plain');
-                headers.append('X-PINGOTHER', 'pingpong');
-                headers.append('Access-Control-Allow-Origin', 'https://raw.githubusercontent.com');
 
                 const init = {
                     method: 'GET',
@@ -86,7 +84,7 @@ main { padding: 8px;min-width:380px;}
                     mode: 'cors',  //uncomment when using url instead of small.txt
                     cache: 'default'
                 };
-                const url = 'https://raw.githubusercontent.com/niteshpatare/avaamo-lookup-nitesh/main/small.txt?raw=true';
+                const url = 'https://raw.githubusercontent.com/niteshpatare/avaamo-lookup-nitesh/91da6ec3806fb017015aa357c61687fbf917305f/small.txt';
                 async function getwords(){
                     //debugger;
                     var response = await fetch(url, init) /*.then(function(response) {
@@ -102,7 +100,8 @@ main { padding: 8px;min-width:380px;}
 
                     let alltext = await response.text();
                     alltext = alltext.replace(/[^a-zA-Z]/g,' ').trim();
-                    alltext = alltext.replace(/\s\s+\n/g,' ').trim();
+                    alltext = alltext.replace(/\s\s+/g,' ').trim();
+                    alltext = alltext.replace(/<br>/g,'').trim();
                     debugger;
                     contentarea.innerText = alltext;
                     console.log(alltext);
