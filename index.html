@@ -1,29 +1,69 @@
 <!doctype html>
 <html>
-    <body>
-
-    </body>
-    <script>
-        (function(){
-            
-            let headers = new Headers();
-            headers.append('Content-Type', 'text/plain');
-
-            const init = {
-                method: 'GET',
-                headers: headers,
-               // mode: 'cors',  //uncomment when using url instead of small.txt
-                cache: 'default'
-            };
-            async function getwords(){
-                debugger;
-                var words = await fetch('small.json', init).then(function(response) {
-                                                                debugger;
-                                                            }); 
-                debugger;
+    <head>
+        <style>
+            .wrapper {
+                display:grid;
+                grid-template-areas: "left right";
+                grid-template-columns: 10fr 2fr;
+                grid-template-rows: 1fr;
             }
-            getwords();
-            
-        })();
-    </script>
+            .left {
+                grid-area: left;
+            }
+            .right {
+                grid-area: right;
+            }
+            .sticky {
+                display: sticky;
+            }
+        </style>
+    </head>
+    <body>
+        <div class='wrapper'>
+            <section class='left'>a</section>
+            <section class='right sticky'>b</section>
+            </div>
+            <div class='sticky'>
+                @NiteshPatare for Avaamo
+            </div>
+        </div>
+        <script>
+            (function(){
+                let words = {}
+                let headers = new Headers();
+                headers.append('Content-Type', 'text/plain');
+
+                const init = {
+                    method: 'GET',
+                    headers: headers,
+                    mode: 'cors',  //uncomment when using url instead of small.txt
+                    cache: 'default'
+                };
+                const url = 'https://raw.githubusercontent.com/niteshpatare/avaamo-lookup-nitesh/main/big.json';
+                async function getwords(){
+                    //debugger;
+                    var response = await fetch(url, init) /*.then(function(response) {
+                                                                    debugger;
+                                                                }); */
+                    const contentarea =document.querySelector('section.left');
+
+                    if(!response.ok) {
+                        const errorStatus = `HTTP error: ${response.status}`;
+                        throw new Error(errorStatus);
+                        contentarea.innerText = errorStatus;
+                    }
+                    
+                    let alltext = await response.text();
+                    alltext = alltext.replace(/[^a-zA-Z]/g,' ').trim();
+                    alltext = alltext.replace(/\s\s+/g,' ').trim();
+                    debugger;
+                    contentarea.innerText = alltext;
+                    console.log(alltext);
+                    debugger;
+                }
+                getwords();
+            })();
+        </script>
+    </body>
 </html>
