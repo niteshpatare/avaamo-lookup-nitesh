@@ -1,93 +1,24 @@
 <!doctype html>
 <html>
     <head>
-       <!-- <link src="https://raw.githubusercontent.com/niteshpatare/avaamo-lookup-nitesh/main/style.css" rel="stylesheet" type="text/css"> -->
-       <style>
-          body, html {
-                width: 100%;
-                height: 100%;
-          }
-            html {
-                font-size: 62.5%;
-            }
-
-            *, *::before, *::after {
-                -ms-box-sizing: border-box;
-                -webkit-box-sizing: border-box;
-                -moz-box-sizing: border-box;
-                box-sizing: border-box;
-            }
-            * {
-                outline: dotted 0px red;
-            }
-            body{
-                outline: 0;
-                vertical-align: baseline;
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-                font-size: 1.6rem;
-                font-weight: 400;
-                line-height: 1.5;
-                color: #212529;
-                text-align: left;
-                max-width:100%;
-                margin:0; padding:0;
-                padding: 4px;min-width:380px;max-width:95%; margin: 0 auto;
-            }
-            body, div, span, applet, object, iframe,
-            h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-            a, abbr, acronym, address, big, cite, code,
-            del, dfn, em, img, ins, kbd, q, s, samp,
-            small, strike, strong, sub, sup, tt, var,
-            b, u, i, center,
-            dl, dt, dd, ol, ul, li,
-            fieldset, form, label, legend,
-            table, caption, tbody, tfoot, thead, tr, th, td,
-            article, aside, canvas, details, embed, 
-            figure, figcaption, footer, header, hgroup, 
-            menu, nav, output, ruby, section, summary,
-            time, mark, audio, video {
-                margin:0; padding:0; 
-            max-width:100%;
-            overflow:hidden;
-            word-wrap: break-word;
-            white-space: pre-wrap;
-            word-break: break-all;
-            overflow-wrap: anywhere;
-            overflow-y: auto;
-            text-align: left;
-            }
-    
-            .wrapper {
-                display:grid;
-                grid-template-areas: "left right";
-                grid-template-columns: 6fr 6fr;
-                grid-template-rows: 1fr;
-                
-                
-            }
-            .left {
-                grid-area: left;display:grid;
-            }
-            .right {
-                grid-area: right;display:grid;
-            }
-            .minspace{min-width: 200px;display:inline-block;}
-
-        </style>
+ 
     </head>
     <body>
         <div class=sorted>Sorted Values</div>
-        <table>
+        <table class=allwords>
             <th><span class="minspace">Text</span></th><th><span class="minspace">Counter</span></th>
             <tr><td><hr></td><td><hr></td></tr>
         </table>
-        <section class='wrapper'>
-            <aside class=left>
-            </aside>
-            <div class=right></div>
-        </section>
+        <div class='mainarea'>
+            <div class=lookuparea>
+                <div class='left meaning min-space'>Text</div>
+                <div class='middle synonyms minspace'>Synonyms</div>
+                <div class='middle2 mean minspace'>Mean</div>
+                <div class='right pos'>Position of start</div>
+            </div>
+        </div>
         <section class='clearfix content'>Loading...</section>
-        <footer class='footer'>@NiteshPatare for Avaamo</footer>
+        <footer class='footer'>@NiteshPatare for Avaamo - "Powered by Yandex.Dictionary" with an active hyperlink to the page <a href='https://tech.yandex.com/dictionary/'>https://tech.yandex.com/dictionary</a>.</footer>
         <script>
             (function(){
                 let words = {}; let count =10; let allWords = [];
@@ -100,8 +31,9 @@
                     mode: 'cors',  //uncomment when using url instead of small.txt
                     cache: 'default'
                 };
-                //const url = 'https://raw.githubusercontent.com/niteshpatare/avaamo-lookup-nitesh/aa573c8ae63804036b885c31c65684e3c2902cc0/small.txt';
-                const url = 'https://raw.githubusercontent.com/niteshpatare/avaamo-lookup-nitesh/aa573c8ae63804036b885c31c65684e3c2902cc0/big.txt';
+                const url = 'https://raw.githubusercontent.com/niteshpatare/avaamo-lookup-nitesh/aa573c8ae63804036b885c31c65684e3c2902cc0/small.txt';
+                //const url = 'https://raw.githubusercontent.com/niteshpatare/avaamo-lookup-nitesh/aa573c8ae63804036b885c31c65684e3c2902cc0/big.txt';
+                const APIkey = 'dict.1.1.20210903T121741Z.9174c6f8c8442176.3dd05252a4e94d29ace81f0bd2cfbeda14666438';
                 async function getwords(){
                     //debugger;
                     var response = await fetch(url, init); /*.then((response) => {
@@ -114,9 +46,7 @@
                     const sortarea =document.querySelector('.sorted');
 
                     if(!response.ok) {
-                        const errorStatus = `HTTP error: ${response.status}`;
-                        throw new Error(errorStatus);
-                        contentarea.innerText = errorStatus;
+                        errorStatus(response);
                     }
                     else{
                         //get filtered words
@@ -136,11 +66,11 @@
                             return ele;
                         });
                         //console.log(words);
-                        debugger;
+                        //debugger;
 
                         //create an array of object ex: [{text:val},{text:val},{text:val}]
                         for (const key in words) {
-                            console.log(`${key}: ${words[key]}`);
+                            //console.log(`${key}: ${words[key]}`);
                             let nobj = {}; nobj.text = key; nobj.val = words[key];
                             allWords.push(nobj);
                         }
@@ -153,15 +83,17 @@
 
                         //store all counts in an array
                         allWords.sort(compare).reverse().splice(10);
-                        console.log({allWords});
+                        //console.log({allWords});
                         sortarea.innerText = `${JSON.stringify(allWords)}`;
                         //show as table using map
                         allWords.map(function(ele){
                             let d = document.createElement("tr")
-                            d.innerHTML = "<td><span class=minspace>"+ele.text +"</span></td><td><span>"+ele.val+"</span></td>";
-                            document.getElementsByTagName("table")[0].appendChild(d);
+                            d.innerHTML = "<td><span class=minspace><a href='#"+ele.text +"'>"+ele.text +"</a></span></td><td><span>"+ele.val+"</span></td>";
+                            document.querySelector('table.allwords').appendChild(d);
                         });
-                        debugger;
+                        getmeaning();
+                        //getsynonyms();
+                        //getpos();
                     }
                 }
 
@@ -170,10 +102,179 @@
                     if (b.val > a.val) return -1;
                     return 0;
                 }
+                
+                function errorStatus(response){
+                    const errorStatus = `HTTP error: ${response.status}`;
+                    throw new Error(errorStatus);
+                    contentarea.innerText = errorStatus;
+                }
+                function getmeaning(){
+                    allWords.map(function(ele){
+                        dictLookup(ele);
+                    });
+                }
 
+                async function dictLookup(ele){
+                    //debugger;
+                    const text = ele.text.toLowerCase();
+                    //const text = 'time';
+                    const url = `https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=${APIkey}&lang=en-en&text=${text}`;
+                        let response = await fetch(url, init);
+                        const mainarea = document.querySelector('.mainarea');
+                        if(!response.ok){
+                            errorStatus(response);
+                        }
+                        else{
+                            //response from API call of Yandex dictionary lookup
+                            let dictLookup = await response.text();
+                            dictLookup = JSON.parse(dictLookup);
+                            //debugger;
+                            let text = dictLookup.def[0] ? (dictLookup.def[0].text || '') : ''; 
+                            let synonyms = dictLookup.def[0] ? (dictLookup.def[0].tr || '') : ''; 
+                            let mean = dictLookup.def[0] ? (dictLookup.def[0].tr[0].mean || '') : '';
+                            let positionofstart = dictLookup.def[0] ? (dictLookup.def[0].pos || '') : '';
+                            let transcriptdetail =  dictLookup.def[0] ? (dictLookup.def[0].ts || '') : '';
+                            //debugger;
+                            
+                            let lookupContent = `<div class=lookuparea id=${text}>`;
+                                lookupContent += `<aside class='left meaning min-space'>${text} (${transcriptdetail})</aside>`;
+                                if(synonyms){
+                                    lookupContent +=`<aside class='middle synonyms minspace'>`;
+                                    synonyms.map(function(ele){
+                                        let tempsyn = ele.syn;
+                                        if(tempsyn){
+                                            tempsyn.map(function(e){
+                                                lookupContent +=`<div>${e.text}</div>`;
+                                            });
+                                            //lookupContent +=`<div>${ele.text}</div>`;
+                                        }
+                                    });
+                                    lookupContent +=`</aside>`;
+                                }
+                                else{
+                                    lookupContent +=`<aside class='middle synonyms minspace'></aside>`;
+                                }
+                                if(mean){
+                                    lookupContent +=`<aside class='middle2 mean minspace'>`;
+                                    mean.map(function(ele){
+                                        lookupContent +=`<div>${ele.text}</div>`;
+                                    });
+                                    lookupContent +=`</aside>`;
+                                }
+                                else{
+                                    lookupContent +=`<aside class='middle2 mean minspace'></aside>`;
+                                }
+                                lookupContent +=`<aside class='right pos'>${positionofstart}</aside></div>`;
 
+                                mainarea.innerHTML +=lookupContent;
+                        }
+                }
                 getwords();
             })();
         </script>
+        <style>
+            body,
+            html {
+                width: 100%;
+                height: 100%;
+            }
+
+            html {
+                font-size: 62.5%;
+            }
+
+            *,
+            *::before,
+            *::after {
+                -ms-box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+
+            * {
+                outline: dotted 0px red;
+            }
+
+            body {
+                outline: 0;
+                vertical-align: baseline;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+                font-size: 1.6rem;
+                font-weight: 400;
+                line-height: 1.5;
+                color: #212529;
+                text-align: left;
+                max-width: 100%;
+                margin: 0;
+                padding: 0;
+                padding: 4px;
+                min-width: 380px;
+                max-width: 95%;
+                margin: 0 auto;
+            }
+
+            body, div, span, applet, object, iframe,
+            h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+            a, abbr, acronym, address, big, cite, code,
+            del, dfn, em, img, ins, kbd, q, s, samp,
+            small, strike, strong, sub, sup, tt, var,
+            b, u, i, center,
+            dl, dt, dd, ol, ul, li,
+            fieldset, form, label, legend,
+            table, caption, tbody, tfoot, thead, tr, th, td,
+            article, aside, canvas, details, embed, 
+            figure, figcaption, footer, header, hgroup, 
+            menu, nav, output, ruby, section, summary,
+            time, mark, audio, video, hr {
+                margin: 0;
+                padding: 0;
+                max-width: 100%;
+                overflow: hidden;
+                word-wrap: break-word;
+                white-space: pre-wrap;
+                word-break: break-all;
+                overflow-wrap: anywhere;
+                overflow-y: auto;
+                text-align: left;
+            }
+
+            .lookuparea {
+                display: grid;
+                grid-template-areas: "left middle middle2 right";
+                grid-template-columns: 3fr 3fr 3fr 3fr;
+                grid-template-rows: 1fr;
+                grid-gap: 8px;
+                border-bottom: 1px solid #adadad;
+            }
+
+            .left,
+            .right,
+            .middle {
+                display: grid;
+            }
+
+            .left {
+                grid-area: left;
+            }
+
+            .middle {
+                grid-area: middle;
+            }
+
+            .middle2 {
+                grid-area: middle2;
+            }
+
+            .right {
+                grid-area: right;
+            }
+
+            .minspace {
+                min-width: 200px;
+                display: inline-block;
+            }
+
+        </style>
     </body>
 </html>
