@@ -46,7 +46,7 @@
             figure, figcaption, footer, header, hgroup, 
             menu, nav, output, ruby, section, summary,
             time, mark, audio, video {
-                
+                margin:0; padding:0; 
             max-width:100%;
             overflow:hidden;
             word-wrap: break-word;
@@ -54,7 +54,7 @@
             word-break: break-all;
             overflow-wrap: anywhere;
             overflow-y: auto;
-
+            text-align: left;
             }
     
             .wrapper {
@@ -71,24 +71,23 @@
             .right {
                 grid-area: right;display:grid;
             }
-.minspace{min-width: 200px;display:inline-block;}
+            .minspace{min-width: 200px;display:inline-block;}
+
         </style>
     </head>
     <body>
-
-                <section class='wrapper'>
-                <div class=left>
-                    <code class=sorted>Sorted Values</code>
-                    <table>
-                        <tr><td><span class="minspace">Text</span><span class="minspace">Counter</span></td></tr>
-                        <tr><td><hr></td></tr>
-                    </table>
-                </div>
-                <div class=right></div>
-                </section>
-
-            <section class='clearfix content'>Loading...</section>
-            <footer class='footer'>@NiteshPatare for Avaamo</footer>
+        <div class=sorted>Sorted Values</div>
+        <table>
+            <th><span class="minspace">Text</span></th><th><span class="minspace">Counter</span></th>
+            <tr><td><hr></td><td><hr></td></tr>
+        </table>
+        <section class='wrapper'>
+            <aside class=left>
+            </aside>
+            <div class=right></div>
+        </section>
+        <section class='clearfix content'>Loading...</section>
+        <footer class='footer'>@NiteshPatare for Avaamo</footer>
         <script>
             (function(){
                 let words = {}; let count =10; let allWords = [];
@@ -136,7 +135,7 @@
                             else { words[ele] += 1; }
                             return ele;
                         });
-                        console.log(words);
+                        //console.log(words);
                         debugger;
 
                         //create an array of object ex: [{text:val},{text:val},{text:val}]
@@ -145,7 +144,7 @@
                             let nobj = {}; nobj.text = key; nobj.val = words[key];
                             allWords.push(nobj);
                         }
-                        console.log(allWords);
+                        //console.log(allWords);
 
                         //sort the object keys based on value counts.
 
@@ -159,7 +158,7 @@
                         //show as table using map
                         allWords.map(function(ele){
                             let d = document.createElement("tr")
-                            d.innerHTML = "<td><span class=minspace>"+ele.text +":</span><span class=minspace>"+ele.val+"</span></td>";
+                            d.innerHTML = "<td><span class=minspace>"+ele.text +"</span></td><td><span>"+ele.val+"</span></td>";
                             document.getElementsByTagName("table")[0].appendChild(d);
                         });
                         debugger;
