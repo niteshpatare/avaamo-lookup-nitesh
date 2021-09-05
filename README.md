@@ -1,5 +1,8 @@
 For: Nitesh Patare
 
+Assignment Output:
+https://niteshpatare.github.io/avaamo-lookup-nitesh/index.html
+
 Exercise:
 Note - This exercise needs to be taken using Node/Javascript only.
 
