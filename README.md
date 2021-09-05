@@ -39,7 +39,8 @@ A. In English, a word has a space on either side of it when it is written.
 
 //Steps for Task 1:
 
-1. Todo - Later use url fetch instead of local json.txt file (TODO - replace local file with url)
+http://norvig.com/big.txt
+Downloaded as big.txt on self github repo
 
 // Steps for task 2: Self API Key for Yandex Dictionary API:
 
@@ -51,8 +52,8 @@ A. In English, a word has a space on either side of it when it is written.
    Developers Guide - API Methiods - Lookup Method
    a. Visit Dictionary API - https://yandex.com/dev/dictionary/
    b. View Documentation
-   c. TODO - Visit Lookup Method. TODO - Search for a word or phrase in the dictionary and returns and automatically generated dictionary entry. It means we have to get meaning/detail of these 10 words which have highest count in the document big.txt/url big.txt (TODO)
-   d. TODO -Get synonyms and part of speech for these 10 words (TODO)
+   c. Visit Lookup Method. - Search for a word or phrase in the dictionary and returns and automatically generated dictionary entry. It means we have to get meaning/detail of these 10 words which have highest count in the document big.txt/url big.txt (TODO)
+   d. Get synonyms / part of speech for these 10 words (TODO)
 
 // Steps for Task 3: Show words list in JSON format for top 10 words.
 
@@ -74,3 +75,5 @@ Yandex Dictionary: https://yandex.com/dev/dictionary/
 
 Documentation URL:
 https://yandex.com/dev/dictionary/doc/dg/reference/lookup.html
+
+All task completed.

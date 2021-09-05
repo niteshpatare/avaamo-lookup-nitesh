@@ -1,14 +1,13 @@
 <!doctype html>
 <html>
     <head>
- 
     </head>
     <body>
-        <p>Yandex dictionary API does not provide more than 7 request and mean details via test API call.<br></p>
-        <div class=sorted>Sorted Values</div>
+        <p>Yandex dictionary API does not provide response for certain words like was, he, is and meaning of it via test API call.<br></p>
+        <div class=sorted>Sorted Values... loading...</div>
         <table class=allwords>
-            <th><span class="minspace">Text</span></th><th><span class="minspace">Counter</span></th>
-            <tr><td><hr></td><td><hr></td></tr>
+            <thead><tr><th><span class="minspace">Text</span></th><th><span class="minspace">Counter</span></tr></thead>
+            <tbody><tr><td><hr></td><td><hr></td></tr></tbody>
         </table>
         <div class='mainarea'>
             <div class=lookuparea>
@@ -18,8 +17,8 @@
                 <div class='right pos'><strong>Position of start</strong></div>
             </div>
         </div>
-        <section class='clearfix content'>Loading...</section>
-        <footer class='footer'>@NiteshPatare for Avaamo - "Powered by Yandex.Dictionary" with an active hyperlink to the page <a href='https://tech.yandex.com/dictionary/'>https://tech.yandex.com/dictionary</a>.</footer>
+        <section class='clearfix content'>Content... loading...</section>
+        <footer class='footer'>@NiteshPatare for Avaamo - "Powered by Yandex.Dictionary" with an active hyperlink to the page<br><a href='https://tech.yandex.com/dictionary/'>https://tech.yandex.com/dictionary</a>.</footer>
         <script>
             (function() {
             		let words= {}; 
@@ -106,7 +105,7 @@
             				allWords.map(function(ele) {
             						let d=document.createElement("tr"); 
                                     d.innerHTML = `<td><span class=minspace><a href='#${ele.text}'>${ele.text}</a></span></td><td><span>${ele.val}</span></td>`;
-            						document.querySelector('table.allwords').appendChild(d);
+            						document.querySelector('table.allwords tbody').appendChild(d);
             					}
 
             				);
@@ -199,7 +198,7 @@
             					lookupContent +=`<aside class='middle2 mean minspace'>`;
 
             					tr.map(function(el) {
-            							console.log( {el});
+            							//console.log( {el});
             							let tempmean=el.mean;
 
             							if(tempmean) {
@@ -253,24 +252,6 @@
                 outline: dotted 0px red;
             }
 
-            body {
-                outline: 0;
-                vertical-align: baseline;
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-                font-size: 1.6rem;
-                font-weight: 400;
-                line-height: 1.5;
-                color: #212529;
-                text-align: left;
-                max-width: 100%;
-                margin: 0;
-                padding: 0;
-                padding: 4px;
-                min-width: 380px;
-                max-width: 95%;
-                margin: 0 auto;
-            }
-
             body, div, span, applet, object, iframe,
             h1, h2, h3, h4, h5, h6, p, blockquote, pre,
             a, abbr, acronym, address, big, cite, code,
@@ -295,7 +276,22 @@
                 overflow-y: auto;
                 text-align: left;
             }
-
+            body {
+                outline: 0;
+                vertical-align: baseline;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+                font-size: 1.6rem;
+                font-weight: 400;
+                line-height: 1.5;
+                color: #212529;
+                text-align: left;
+                max-width: 100%;
+                margin: 0;
+                padding: 0;
+                min-width: 380px;
+                max-width: 98%;
+                margin: 0 auto;
+            }
             .lookuparea {
                 display: grid;
                 grid-template-areas: "left middle middle2 right";
