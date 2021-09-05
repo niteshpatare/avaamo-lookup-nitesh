@@ -57,16 +57,20 @@ A. In English, a word has a space on either side of it when it is written.
 // Steps for Task 3: Show words list in JSON format for top 10 words.
 
 1. Todo
-   a. Word: text
-   b. Output
-   i. Count of Occurrence in that Particular Document
-   ii. Synonyms
-   iii. Pos
+   a. Word: text (display most repetative words- done)
+   b. Output- order by word Occurrences (done), display them both in json and table format with count (done)
+   i. Count of Occurrence in that Particular Document (done)
+   ii. Synonyms/meaning as well (done)
+   iii. Pos (done)
 
 ---
 
-API Key:
+Get API Key: https://yandex.com/dev/dictionary/keys/get/?service=dict
 dict.1.1.20210903T121741Z.9174c6f8c8442176.3dd05252a4e94d29ace81f0bd2cfbeda14666438
+
+My Keys: https://yandex.com/dev/keys/
+
+Yandex Dictionary: https://yandex.com/dev/dictionary/
 
 Documentation URL:
 https://yandex.com/dev/dictionary/doc/dg/reference/lookup.html

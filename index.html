@@ -4,6 +4,7 @@
  
     </head>
     <body>
+        <p>Yandex dictionary API does not provide more than 7 request and mean details via test API call.<br></p>
         <div class=sorted>Sorted Values</div>
         <table class=allwords>
             <th><span class="minspace">Text</span></th><th><span class="minspace">Counter</span></th>
@@ -11,166 +12,222 @@
         </table>
         <div class='mainarea'>
             <div class=lookuparea>
-                <div class='left meaning min-space'>Text</div>
-                <div class='middle synonyms minspace'>Synonyms</div>
-                <div class='middle2 mean minspace'>Mean</div>
-                <div class='right pos'>Position of start</div>
+                <div class='left meaning min-space'><strong>Text</strong></div>
+                <div class='middle synonyms minspace'><strong>Synonyms</strong></div>
+                <div class='middle2 mean minspace'><strong>Mean</strong></div>
+                <div class='right pos'><strong>Position of start</strong></div>
             </div>
         </div>
         <section class='clearfix content'>Loading...</section>
         <footer class='footer'>@NiteshPatare for Avaamo - "Powered by Yandex.Dictionary" with an active hyperlink to the page <a href='https://tech.yandex.com/dictionary/'>https://tech.yandex.com/dictionary</a>.</footer>
         <script>
-            (function(){
-                let words = {}; let count =10; let allWords = [];
-                let headers = new Headers();
-                headers.append('Content-Type', 'text/plain');
+            (function() {
+            		let words= {}; 
+                    let count=10; 
+                    let allWords=[];
+            		let headers=new Headers();
+            		headers.append('Content-Type', 'text/plain');
 
-                const init = {
-                    method: 'GET',
-                    headers: headers,
-                    mode: 'cors',  //uncomment when using url instead of small.txt
-                    cache: 'default'
-                };
-                const url = 'https://raw.githubusercontent.com/niteshpatare/avaamo-lookup-nitesh/aa573c8ae63804036b885c31c65684e3c2902cc0/small.txt';
-                //const url = 'https://raw.githubusercontent.com/niteshpatare/avaamo-lookup-nitesh/aa573c8ae63804036b885c31c65684e3c2902cc0/big.txt';
-                const APIkey = 'dict.1.1.20210903T121741Z.9174c6f8c8442176.3dd05252a4e94d29ace81f0bd2cfbeda14666438';
-                async function getwords(){
-                    //debugger;
-                    var response = await fetch(url, init); /*.then((response) => {
+            		const init= {
+            			method: 'GET',
+            			headers: headers,
+            			mode: 'cors', //uncomment when using url instead of small.txt
+            			cache: 'default'
+            		}
+
+            		;
+            		//const url='https://raw.githubusercontent.com/niteshpatare/avaamo-lookup-nitesh/aa573c8ae63804036b885c31c65684e3c2902cc0/small.txt';
+            		const url = 'https://raw.githubusercontent.com/niteshpatare/avaamo-lookup-nitesh/aa573c8ae63804036b885c31c65684e3c2902cc0/big.txt';
+            		const APIkey='dict.1.1.20210903T121741Z.9174c6f8c8442176.3dd05252a4e94d29ace81f0bd2cfbeda14666438';
+
+            		async function getwords() {
+            			//debugger;
+            			var response=await fetch(url, init);
+            			/*.then((response) => {
                                                                 return response.json();
                                                             })
                                                             .then((myJson) => {
                                                                 console.log(myJson);
                                                             }); */
-                    const contentarea =document.querySelector('.content');
-                    const sortarea =document.querySelector('.sorted');
+            			const contentarea=document.querySelector('.content');
+            			const sortarea=document.querySelector('.sorted');
 
-                    if(!response.ok) {
-                        errorStatus(response);
-                    }
-                    else{
-                        //get filtered words
-                        let alltext = await response.text();
-                        alltext = alltext.replace(/[^a-zA-Z]/g,' ').trim();
-                        alltext = alltext.replace(/\s\s+/g,' ').trim();
-                        contentarea.innerText = alltext;
-                        
-                        //split words by spaces
-                        let wordarray = [];
-                        wordarray = alltext.split(' ');
+            			if( !response.ok) {
+            				errorStatus(response);
+            			}
 
-                        //generate hash table with word:count (key/value pair)
-                        wordarray.map(function(ele){
-                            if(!words.hasOwnProperty(ele)) { words[ele] = 1;  }
-                            else { words[ele] += 1; }
-                            return ele;
-                        });
-                        //console.log(words);
-                        //debugger;
+            			else {
+            				//get filtered words
+            				let alltext=await response.text();
+            				alltext=alltext.replace(/[^a-zA-Z]/g, ' ').trim();
+            				alltext=alltext.replace(/\s\s+/g, ' ').trim();
+            				contentarea.innerText= `Original Content: `+alltext;
+            				//split words by spaces
+            				let wordarray=[];
+            				wordarray=alltext.split(' ');
 
-                        //create an array of object ex: [{text:val},{text:val},{text:val}]
-                        for (const key in words) {
-                            //console.log(`${key}: ${words[key]}`);
-                            let nobj = {}; nobj.text = key; nobj.val = words[key];
-                            allWords.push(nobj);
-                        }
-                        //console.log(allWords);
+            				//generate hash table with word:count (key/value pair)
+            				wordarray.map(function(ele) {
+            						if( !words.hasOwnProperty(ele)) {
+            							words[ele]=1;
+            						}
 
-                        //sort the object keys based on value counts.
+            						else {
+            							words[ele] +=1;
+            						}
 
-                        //allWords.sort('text');
-                        //console.log(allWords);
+            						return ele;
+            					}
 
-                        //store all counts in an array
-                        allWords.sort(compare).reverse().splice(10);
-                        //console.log({allWords});
-                        sortarea.innerText = `${JSON.stringify(allWords)}`;
-                        //show as table using map
-                        allWords.map(function(ele){
-                            let d = document.createElement("tr")
-                            d.innerHTML = "<td><span class=minspace><a href='#"+ele.text +"'>"+ele.text +"</a></span></td><td><span>"+ele.val+"</span></td>";
-                            document.querySelector('table.allwords').appendChild(d);
-                        });
-                        getmeaning();
-                        //getsynonyms();
-                        //getpos();
-                    }
-                }
+            				);
 
-                function compare(a, b) {
-                    if (a.val > b.val) return 1;
-                    if (b.val > a.val) return -1;
-                    return 0;
-                }
-                
-                function errorStatus(response){
-                    const errorStatus = `HTTP error: ${response.status}`;
-                    throw new Error(errorStatus);
-                    contentarea.innerText = errorStatus;
-                }
-                function getmeaning(){
-                    allWords.map(function(ele){
-                        dictLookup(ele);
-                    });
-                }
+            				//console.log(words);
+            				//debugger;
+            				//create an array of object ex: [{text:val},{text:val},{text:val}]
+            				for (const key in words) {
 
-                async function dictLookup(ele){
-                    //debugger;
-                    const text = ele.text.toLowerCase();
-                    //const text = 'time';
-                    const url = `https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=${APIkey}&lang=en-en&text=${text}`;
-                        let response = await fetch(url, init);
-                        const mainarea = document.querySelector('.mainarea');
-                        if(!response.ok){
-                            errorStatus(response);
-                        }
-                        else{
-                            //response from API call of Yandex dictionary lookup
-                            let dictLookup = await response.text();
-                            dictLookup = JSON.parse(dictLookup);
-                            //debugger;
-                            let text = dictLookup.def[0] ? (dictLookup.def[0].text || '') : ''; 
-                            let synonyms = dictLookup.def[0] ? (dictLookup.def[0].tr || '') : ''; 
-                            let mean = dictLookup.def[0] ? (dictLookup.def[0].tr[0].mean || '') : '';
-                            let positionofstart = dictLookup.def[0] ? (dictLookup.def[0].pos || '') : '';
-                            let transcriptdetail =  dictLookup.def[0] ? (dictLookup.def[0].ts || '') : '';
-                            //debugger;
-                            
-                            let lookupContent = `<div class=lookuparea id=${text}>`;
-                                lookupContent += `<aside class='left meaning min-space'>${text} (${transcriptdetail})</aside>`;
-                                if(synonyms){
-                                    lookupContent +=`<aside class='middle synonyms minspace'>`;
-                                    synonyms.map(function(ele){
-                                        let tempsyn = ele.syn;
-                                        if(tempsyn){
-                                            tempsyn.map(function(e){
-                                                lookupContent +=`<div>${e.text}</div>`;
-                                            });
-                                            //lookupContent +=`<div>${ele.text}</div>`;
-                                        }
-                                    });
-                                    lookupContent +=`</aside>`;
-                                }
-                                else{
-                                    lookupContent +=`<aside class='middle synonyms minspace'></aside>`;
-                                }
-                                if(mean){
-                                    lookupContent +=`<aside class='middle2 mean minspace'>`;
-                                    mean.map(function(ele){
-                                        lookupContent +=`<div>${ele.text}</div>`;
-                                    });
-                                    lookupContent +=`</aside>`;
-                                }
-                                else{
-                                    lookupContent +=`<aside class='middle2 mean minspace'></aside>`;
-                                }
-                                lookupContent +=`<aside class='right pos'>${positionofstart}</aside></div>`;
+            					//console.log(`${key}: ${words[key]}`);
+            					let nobj= {}; 
+                                nobj.text=key; //.toLowerCase(); 
+                                nobj.val=words[key];
+            					allWords.push(nobj);
+            				}
 
-                                mainarea.innerHTML +=lookupContent;
-                        }
-                }
-                getwords();
-            })();
+            				//console.log(allWords);
+            				//sort the object keys based on value counts.
+            				//store all counts in an array
+            				allWords.sort(compare).reverse().splice(10); //sort by count value
+
+            				//allWords.sort(comparebychar); //sort by char value
+            				//console.log({allWords});
+            				sortarea.innerText=`${JSON.stringify(allWords)}`;
+
+            				//show as table using map
+            				allWords.map(function(ele) {
+            						let d=document.createElement("tr"); 
+                                    d.innerHTML = `<td><span class=minspace><a href='#${ele.text}'>${ele.text}</a></span></td><td><span>${ele.val}</span></td>`;
+            						document.querySelector('table.allwords').appendChild(d);
+            					}
+
+            				);
+            				getmeaning();
+            			}
+            		}
+
+            		function compare(a, b) {
+            			if (a.val > b.val) return 1;
+            			if (b.val > a.val) return -1;
+            			return 0;
+            		}
+
+            		function comparebychar(a, b) {
+            			if (a.text > b.text) return 1;
+            			if (b.text > a.text) return -1;
+            			return 0;
+            		}
+
+            		function errorStatus(response) {
+            			const errorStatus=`HTTP error: ${response.status}`;
+            			throw new Error(errorStatus);
+            			contentarea.innerText=errorStatus;
+            		}
+
+            		function getmeaning() {
+            			allWords.map(function(ele) {
+            					dictLookup(ele);
+            				}
+
+            			);
+            		}
+
+            		async function dictLookup(ele) {
+
+            			//debugger;
+            			//console.log({ele});
+            			const text=ele.text; //.toLowerCase();
+            			//const text = 'time';
+            			const url=`https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=${APIkey}&lang=en-en&text=${text}`;
+            			let response=await fetch(url, init);
+            			const mainarea=document.querySelector('.mainarea');
+
+            			if( !response.ok) {
+            				errorStatus(response);
+            			}
+
+            			else {
+            				//response from API call of Yandex dictionary lookup
+            				let dictLookup=await response.text();
+            				dictLookup=JSON.parse(dictLookup);
+            				//debugger;
+            				let text=dictLookup.def[0] ? (dictLookup.def[0].text || '') : 'yandex returns null';
+            				let tr=dictLookup.def[0] ? (dictLookup.def[0].tr || '') : '';
+            				let mean=dictLookup.def[0] ? (dictLookup.def[0].tr || '') : '';
+            				let positionofstart=dictLookup.def[0] ? (dictLookup.def[0].pos || '') : '';
+            				let transcriptdetail=dictLookup.def[0] ? (dictLookup.def[0].ts || '') : '';
+
+            				//debugger;
+            				//note: yandex dict returns only 7 items and not 10 when GET request API call is made
+            				//display on page
+            				let lookupContent=`<div class=lookuparea id=${text}>`;
+
+            				lookupContent +=`<aside class='left meaning min-space'>${text} (ts: ${transcriptdetail})</aside>`;
+
+            				if(tr) {
+            					lookupContent +=`<aside class='middle synonyms minspace'>`;
+
+            					tr.map(function(ele) {
+            							let tempsyn=ele.syn;
+
+            							if(tempsyn) {
+            								tempsyn.map(function(e) {
+            										lookupContent +=`<div>${e.text}</div>`;
+            									}
+
+            								);
+            							}
+            						}
+
+            					);
+            					lookupContent +=`</aside>`;
+            				}
+
+            				else {
+            					lookupContent +=`<aside class='middle synonyms minspace'></aside>`;
+            				}
+
+            				if(tr) {
+            					lookupContent +=`<aside class='middle2 mean minspace'>`;
+
+            					tr.map(function(el) {
+            							console.log( {el});
+            							let tempmean=el.mean;
+
+            							if(tempmean) {
+            								tempmean.map(function(em) {
+            										lookupContent +=`<div>${em.text}</div>`;
+            									}
+
+            								);
+            							}
+            						}
+
+            					);
+            					lookupContent +=`</aside>`;
+            				}
+
+            				else {
+            					lookupContent +=`<aside class='middle2 mean minspace'></aside>`;
+            				}
+
+            				lookupContent +=`<aside class='right pos'>${positionofstart}</aside></div>`;
+            				mainarea.innerHTML +=lookupContent;
+            			}
+            		}
+
+            		getwords();
+            	}
+
+            )();
         </script>
         <style>
             body,
@@ -271,7 +328,7 @@
             }
 
             .minspace {
-                min-width: 200px;
+                min-width: 232px;
                 display: inline-block;
             }
 
